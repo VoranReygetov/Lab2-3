@@ -141,10 +141,9 @@
           (setf facet (make-facet-data :name facet-name :values nil))
           (push facet (slot-data-facets slot)))
         (if (and label message)
-            (push (list value (list label message)) (facet-data-values facet))
-            (push value (facet-data-values facet)))))
-    value)
-)
+            (setf (facet-data-values facet) (list (list value (list label message))))
+            (setf (facet-data-values facet) (list value)))))
+    value))
 
 (defun FPUT (frame-name slot-name facet-name value &optional label message)
   "Put a value into a frame's slot facet, triggering procedures"
@@ -273,22 +272,6 @@
 (defun FGENNAMELIST ()
   "Get list of generated frame names"
   *FGENAMELIST*)
-
-; (defun FDISPLAY (frame-name)
-;   "Display a frame's contents"
-;   (let ((frame (cdr (assoc frame-name *FRAMES*))))
-;     (unless frame
-;       (error "Frame ~S not found" frame-name))
-;     (format t "Frame: ~S~%" frame-name)
-;     (dolist (slot (frame-data-slots frame))
-;       (format t "  Slot: ~S~%" (slot-data-name slot))
-;       (dolist (facet (slot-data-facets slot))
-;         (format t "    Facet: ~S, Values: ~S~%" (facet-data-name facet) (facet-data-values facet)))))
-; )
-; (defun FDISPLAY-ALL ()
-;   "Display all frames in the system"
-;   (dolist (frame *FRAMES*)
-;     (FDISPLAY (car frame))))
 
 (defun FPRINT (&optional (fnl *FRAMES*))
   "Display specified frames in a user-friendly format. Default is *FRAMES*"
